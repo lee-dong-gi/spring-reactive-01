@@ -27,7 +27,7 @@ public class BackpressureStrategyBufferDropOldestExample {
                         TimeUtils.sleep(1000L);
                         Logger.onNext(data);
                     },
-                    error -> Logger.onError(error));
+                    Logger::onError);
 
         TimeUtils.sleep(3000L);
     }

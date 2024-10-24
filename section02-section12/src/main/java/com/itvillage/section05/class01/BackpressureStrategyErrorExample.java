@@ -15,14 +15,14 @@ public class BackpressureStrategyErrorExample {
     public static void main(String[] args) {
         Flux
                 .interval(Duration.ofMillis(1L))
-                .onBackpressureError()
+                .onBackpressureError() // error 전략 사용
                 .doOnNext(Logger::doOnNext)
-                .publishOn(Schedulers.parallel())
+                .publishOn(Schedulers.parallel()) // 스레드 추가
                 .subscribe(data -> {
-                        TimeUtils.sleep(5L);
+                        TimeUtils.sleep(5L); // publisher가 emit하는 속도(1ms) 보다 처리속도(5ms)가 느린 상황
                         Logger.onNext(data);
                     },
-                    error -> Logger.onError(error));
+                        Logger::onError);
 
         TimeUtils.sleep(2000L);
     }

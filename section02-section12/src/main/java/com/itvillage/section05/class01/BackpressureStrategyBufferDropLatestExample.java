@@ -22,12 +22,12 @@ public class BackpressureStrategyBufferDropLatestExample {
                     dropped -> Logger.info("# Overflow & dropped: {}", dropped),
                     BufferOverflowStrategy.DROP_LATEST)
             .doOnNext(data -> Logger.info("# emitted by Buffer: {}", data))
-            .publishOn(Schedulers.parallel(), false, 1)
+            .publishOn(Schedulers.parallel(), false, 1) // prefetch란 추가되는 스레드의 버퍼개수
             .subscribe(data -> {
                     TimeUtils.sleep(1000L);
                     Logger.onNext(data);
                 },
-                error -> Logger.onError(error));
+                    Logger::onError);
 
         TimeUtils.sleep(3000L);
     }

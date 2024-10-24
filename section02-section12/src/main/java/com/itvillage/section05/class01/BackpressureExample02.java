@@ -22,7 +22,7 @@ public class BackpressureExample02 {
                 }
 
                 @Override
-                protected void hookOnNext(Integer value) {
+                protected void hookOnNext(Integer value) { // 데이터를 2개씩 전달받아 처리
                     count++;
                     Logger.onNext(value);
                     if (count == 2) {
