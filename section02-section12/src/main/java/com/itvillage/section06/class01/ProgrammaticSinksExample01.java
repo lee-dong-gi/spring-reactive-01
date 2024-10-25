@@ -22,11 +22,13 @@ public class ProgrammaticSinksExample01 {
                 .forEach(n -> {
                     try {
                         new Thread(() -> {
-                            unicastSink.emitNext(doTask(n), Sinks.EmitFailureHandler.FAIL_FAST);
+                            unicastSink.emitNext(doTask(n), 
+                                    Sinks.EmitFailureHandler.FAIL_FAST // 멀티스레드 환경에서 빠르게 실패할 수 있는 기능
+                            );
                             log.info("# emitted: {}", n);
                         }).start();
                         Thread.sleep(100L);
-                    } catch (InterruptedException e) {}
+                    } catch (InterruptedException ignored) {}
                 });
 
         fluxView

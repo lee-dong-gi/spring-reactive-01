@@ -20,10 +20,10 @@ public class SinkManyExample04 {
         replaySink.emitNext(2, FAIL_FAST);
         replaySink.emitNext(3, FAIL_FAST);
 
-        fluxView.subscribe(data -> Logger.onNext("Subscriber1", data));
+        fluxView.subscribe(data -> Logger.onNext("Subscriber1", data)); // 2, 3
 
         replaySink.emitNext(4, FAIL_FAST);
 
-        fluxView.subscribe(data -> Logger.onNext("Subscriber2", data));
+        fluxView.subscribe(data -> Logger.onNext("Subscriber2", data)); // 3, 4
     }
 }

@@ -20,7 +20,7 @@ public class ProgrammaticCreateExample01 {
                 .create((FluxSink<String> sink) -> {
                     IntStream
                             .range(1, tasks)
-                            .forEach(n -> sink.next(doTask(n)));
+                            .forEach(n -> sink.next(doTask(n))); // emit
                 })
 //                .subscribeOn(Schedulers.boundedElastic())
 //                .doOnNext(n -> log.info("# create(): {}", n))

@@ -89,3 +89,13 @@
       - ![img_4.png](img_4.png)
     - DROP OLDEST 전략: Downstream으로 전달할 데이터가 버퍼에 가득 찰 경우, 가장 나중에 들어온 데이터를 Drop 시킴
       - ![img_5.png](img_5.png)
+---
+
+### Sinks
+- Reactive Streams에서 발생하는 signal을 프로그래밍적으로 emit(push)할 수 있는 기능을 가지고 있는 Publisher의 일종
+- Thread-Safe하게 signal을 발생시키기 때문에 Processor보다 더 나은 대안이 됨
+- Sinks.one은 Mono에 해당되고 Sinks.many는 flux에 해당됨
+- Sinks.many().unicast: 하나의 subscriber만 허용
+- Sinks.many().multicast: 어려개의 subscriber 허용, 첫번째 구독이 발생하는 시점에 data emit이 시작되는 웜업 방식(hot sequence)으로 동작함
+- Sinks.many().replay: subscriber가 구독을 한 시점에 가장 최근에 emit된 데이터를 limit으로 설정된 개수 만큼 전달받음, all로 설정하면 모두 받음
+- `com.itvillage.section06.class01` 참조

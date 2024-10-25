@@ -25,6 +25,7 @@ public class SinkManyExample01 {
         unicastSink.emitNext(3, FAIL_FAST);
 
         // TODO 주석 전, 후 비교해서 보여 줄 것.
+        // unicast 스펙은 하나의 subscriber만 허용되기 때문에 오류가 발생함
         fluxView.subscribe(data -> Logger.onNext("Subscriber2", data));
     }
 }
