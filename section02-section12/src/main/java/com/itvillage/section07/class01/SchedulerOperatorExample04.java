@@ -11,7 +11,7 @@ import reactor.core.scheduler.Schedulers;
  */
 public class SchedulerOperatorExample04 {
     public static void main(String[] args) {
-        Flux.fromArray(new Integer[] {1, 3, 5, 7})
+        Flux.fromArray(new Integer[] {1, 3, 5, 7}) // upstream 실행스레드 지정
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(data -> Logger.doOnNext("fromArray", data))
                 .filter(data -> data > 3)

@@ -13,7 +13,7 @@ public class SchedulerOperatorExample02 {
     public static void main(String[] args) {
         Flux.fromArray(new Integer[] {1, 3, 5, 7})
                 .doOnNext(data -> Logger.doOnNext("fromArray", data))
-                .publishOn(Schedulers.parallel())
+                .publishOn(Schedulers.parallel()) // 아래 코드들의 쓰레드를 지정해줌
                 .filter(data -> data > 3)
                 .doOnNext(data -> Logger.doOnNext("filter", data))
                 .map(data -> data * 10)

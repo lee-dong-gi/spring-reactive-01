@@ -99,3 +99,50 @@
 - Sinks.many().multicast: 어려개의 subscriber 허용, 첫번째 구독이 발생하는 시점에 data emit이 시작되는 웜업 방식(hot sequence)으로 동작함
 - Sinks.many().replay: subscriber가 구독을 한 시점에 가장 최근에 emit된 데이터를 limit으로 설정된 개수 만큼 전달받음, all로 설정하면 모두 받음
 - `com.itvillage.section06.class01` 참조
+
+---
+
+### Scheduler
+
+- Scheduler를 위한 전용 Operator
+  - publishOn(): Operator 체인에서 Downstream Operator의 실행을 위한 스레드를 지정
+    - `com.itvillage.section07.class01.SchedulerOperatorExample02` publishOn 참조
+  - subscribeOn(): 최상위 Upstream Publisher의 실행을 위한 스레드를 지정, 원본 데이터 소스를 emit하기 위한 스케줄러를 지정
+    - `com.itvillage.section07.class01.SchedulerOperatorExample04` fromArray 참조
+  - parallel(): Downstream에 대한 데이터 처리를 병렬로 분할 처리하기 위한 스레드 지정, runOn()을 사용하지 않으면 병렬 처리가 수행되지 않음
+    - ![img_6.png](img_6.png)
+    - `com.itvillage.section07.class00` 참조
+- publishOn() 동작 이해
+  - publishOn()을 지정하기 이전에는 main 스레드에서 작동하고 publishOn()을 지정한 이후에는 새롭게 지정된 스레드가 사용됨
+  - ![img_7.png](img_7.png)
+  - ![img_8.png](img_8.png)
+- subscribeOn() 동작 이해
+  - subscribeOn()은 publishOn()의 위치에 상관 없이 publishOn()을 만나기 이전의 Upstream Operator 스레드를 지정함, publishOn()이 없다면 subscribeOn()이 지정한 스레드로 모두 실행됨
+  - ![img_9.png](img_9.png)
+  - ![img_10.png](img_10.png)
+  - ![img_11.png](img_11.png)
+- Scheduler의 종류
+  - Schedulers.immediate(): 별도의 스레드를 추가할당하지 않고 현재 스레드에서 실행
+  - Schedulers.single(): 
+    - 하나의 스레드를 재사용함
+    - 저지연(low latency) 일회성 실행에 최적화
+  - Schedulers.boundedElastic(): 
+    - 스레드 풀(ExecutorService 기반)을 생성하여 생성된 스레드를 재사용
+    - 생성할 수 있는 스레드 수에 제한이 있음(max(default): number of cpu core * 10)
+    - 긴 실행 시간을 가질 수 있는 Blocking I/O 작업에 최적화
+    - 더이상 사용할 스레드도 없고 대기할 Queue도 없을 경우 Exception 발생
+    - com.itvillage.section07.class02.SchedulersNewBoundedElasticExample01 참조
+      - ![img_12.png](img_12.png)
+  - Schedulers.parallel(): 
+    - 여러개의 스레드를 할당해서 동시작업 수행
+    - Non-Blocking I/O 작업에 최적와
+    - CPU CORE 수만큼의 스레드를 생성함
+    - com.itvillage.section07.class02.SchedulersNewParallelExample01 참조
+  - Schedulers.fromExecutorService()
+    - 기존에 사용하고 있는 ExecutorService가 있다면 해당 서비스를 사용하여 스레드 생성(권장x)
+    - 의미있는 식별자를 제공하기 때문에 Metric에서 주로 사용됨
+  - Schedulers.newXXXX():
+    - 다양한 유형의 새로운 Scheduler를 생성 할 수 있다.
+    - newSingle(), newParallel(), newboudedElastic()
+    - Scheduler의 이름 지정 가능
+    - scheduler.dispose(): new로 생성된 경우 일정시간동안 종료되지 않음 그래서 해당 구문으로 작업이 끝난 후 즉시 종료 할 수 있음

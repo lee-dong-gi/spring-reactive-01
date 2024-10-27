@@ -13,7 +13,7 @@ import reactor.core.scheduler.Schedulers;
 public class ParallelExample04 {
     public static void main(String[] args) {
         Flux.fromArray(new Integer[]{1, 3, 5, 7, 9, 11, 13, 15, 17, 19})
-                .parallel(4)
+                .parallel(4) // 스레드 개수 지정
                 .runOn(Schedulers.parallel())
                 .subscribe(Logger::onNext);
 

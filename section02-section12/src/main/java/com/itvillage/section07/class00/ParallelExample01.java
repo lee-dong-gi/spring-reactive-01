@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 public class ParallelExample01 {
     public static void main(String[] args) {
         Flux.fromArray(new Integer[]{1, 3, 5, 7, 9, 11, 13, 15})
-                .parallel()
+                .parallel() // runOn이 없어서 병렬 작업 수행되지 않음
                 .subscribe(Logger::onNext);
     }
 }
