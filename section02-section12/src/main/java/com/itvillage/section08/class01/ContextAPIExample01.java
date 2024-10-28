@@ -22,7 +22,7 @@ public class ContextAPIExample01 {
                 .contextWrite(Context.of(key1, "itVillage", key2, "Kevin"));
 
 
-        mono.subscribe(data -> Logger.onNext(data));
+        mono.subscribe(Logger::onNext);
 
         TimeUtils.sleep(100L);
     }

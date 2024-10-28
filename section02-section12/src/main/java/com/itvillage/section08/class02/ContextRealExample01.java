@@ -6,7 +6,7 @@ import reactor.util.context.Context;
 
 /**
  * Context 활용 예제
- *  - 직교성을 가지는 정보를 표현할 때 주로 사용된다.
+ *  - 직교성(각 요소들이 서로 독립적인 특성)을 가지는 정보를 표현할 때 주로 사용된다.
  */
 public class ContextRealExample01 {
     public static final String HEADER_NAME_AUTH_TOKEN = "authToken";
@@ -23,6 +23,7 @@ public class ContextRealExample01 {
 
     }
 
+    // zip은 파라미터로 전달한 첫번째 mono인 book과 두번째 mono인 Mono.deferCont... 에서 emit된 데이터를 tuple이라는 자료구조로 묶어주는 역할을함
     private static Mono<String> postBook(Mono<Book> book) {
         return Mono.zip(book, Mono.deferContextual(ctx -> Mono.just(ctx.get(HEADER_NAME_AUTH_TOKEN))))
                 .flatMap(tuple -> Mono.just(tuple))  // 외부 API 서버로 HTTP POST request를 전송한다고 가정

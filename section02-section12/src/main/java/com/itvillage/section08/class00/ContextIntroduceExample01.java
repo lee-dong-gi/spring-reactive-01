@@ -22,7 +22,7 @@ public class ContextIntroduceExample01 {
                 .contextWrite(context -> context.put(key, "Reactor"));
 
 
-        mono.subscribe(data -> Logger.onNext(data));
+        mono.subscribe(Logger::onNext);
 
         TimeUtils.sleep(100L);
     }

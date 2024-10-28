@@ -14,7 +14,7 @@ public class ContextFetureExample04 {
     public static void main(String[] args) {
         String key1 = "id";
         Mono.just("Kevin")
-            .transformDeferredContextual((stringMono, contextView) -> contextView.get("job"))
+            .transformDeferredContextual((stringMono, contextView) -> contextView.get("job")) // inner sequence 값 호출하려고 할때 없음
             .flatMap(name -> Mono.deferContextual(ctx ->
                     Mono.just(ctx.get(key1) + ", " + name)
                         .transformDeferredContextual((mono, innerCtx) ->
