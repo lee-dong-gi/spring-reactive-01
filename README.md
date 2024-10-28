@@ -159,7 +159,7 @@
     - Context.of(key1, value1, key2, value2,...): key/value 형태로 Context에 여러개의 값을 씀
     - putAll(ContextView): 파라미터로 입력된 ContextView를 merge
     - delete(key): Context에서 key에 해당하는 value를 삭제
-  -  Context View API
+  - Context View API
     - get(key): ContextView에서 key에 해당하는 value를 반환한다.
     - getOrEmpty(key): ContextView에서 key에 해당하는 value를 Optional로 래핑해서 반환
     - getOrDefault(key, default value): ContextView에서 key에 해당하는 value를 가져옴, key에 해당하는 value가 없으면 default value를 가져옴
