@@ -24,14 +24,14 @@ public class LogOperatorExample02 {
     public static void main(String[] args) {
         Hooks.onOperatorDebug();
 
-        Flux.fromArray(new String[]{"BANANAS", "APPLES", "PEARS", "MELONS"})
+        Flux.fromArray(new String[]{"BANANAS", "APPLES", "PEARS", "MELONS"}) // onSubscribe1
                 .log()
-                .map(String::toLowerCase)
+                .map(String::toLowerCase) // onSubscribe2
                 .log()
-                .map(fruit -> fruit.substring(0, fruit.length() - 1))
+                .map(fruit -> fruit.substring(0, fruit.length() - 1)) // onSubscribe3
                 .log()
-                .map(fruits::get)
-                .log()
+                .map(fruits::get) // onSubscribe4
+                .log() // OnAssembly.4
                 .subscribe(Logger::onNext, Logger::onError);
     }
 }

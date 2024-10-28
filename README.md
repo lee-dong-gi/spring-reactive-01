@@ -98,7 +98,7 @@
 - Sinks.many().unicast: 하나의 subscriber만 허용
 - Sinks.many().multicast: 어려개의 subscriber 허용, 첫번째 구독이 발생하는 시점에 data emit이 시작되는 웜업 방식(hot sequence)으로 동작함
 - Sinks.many().replay: subscriber가 구독을 한 시점에 가장 최근에 emit된 데이터를 limit으로 설정된 개수 만큼 전달받음, all로 설정하면 모두 받음
-- `com.itvillage.section06.class01` 참조
+- `com.itvillage.section06.class01` 참고
 
 ---
 
@@ -106,12 +106,12 @@
 
 - Scheduler를 위한 전용 Operator
   - publishOn(): Operator 체인에서 Downstream Operator의 실행을 위한 스레드를 지정
-    - `com.itvillage.section07.class01.SchedulerOperatorExample02` publishOn 참조
+    - `com.itvillage.section07.class01.SchedulerOperatorExample02` publishOn 참고
   - subscribeOn(): 최상위 Upstream Publisher의 실행을 위한 스레드를 지정, 원본 데이터 소스를 emit하기 위한 스케줄러를 지정
-    - `com.itvillage.section07.class01.SchedulerOperatorExample04` fromArray 참조
+    - `com.itvillage.section07.class01.SchedulerOperatorExample04` fromArray 참고
   - parallel(): Downstream에 대한 데이터 처리를 병렬로 분할 처리하기 위한 스레드 지정, runOn()을 사용하지 않으면 병렬 처리가 수행되지 않음
     - ![img_6.png](img_6.png)
-    - `com.itvillage.section07.class00` 참조
+    - `com.itvillage.section07.class00` 참고
 - publishOn() 동작 이해
   - publishOn()을 지정하기 이전에는 main 스레드에서 작동하고 publishOn()을 지정한 이후에는 새롭게 지정된 스레드가 사용됨
   - ![img_7.png](img_7.png)
@@ -131,13 +131,13 @@
     - 생성할 수 있는 스레드 수에 제한이 있음(max(default): number of cpu core * 10)
     - 긴 실행 시간을 가질 수 있는 Blocking I/O 작업에 최적화
     - 더이상 사용할 스레드도 없고 대기할 Queue도 없을 경우 Exception 발생
-    - com.itvillage.section07.class02.SchedulersNewBoundedElasticExample01 참조
+    - com.itvillage.section07.class02.SchedulersNewBoundedElasticExample01 참고
       - ![img_12.png](img_12.png)
   - Schedulers.parallel(): 
     - 여러개의 스레드를 할당해서 동시작업 수행
     - Non-Blocking I/O 작업에 최적와
     - CPU CORE 수만큼의 스레드를 생성함
-    - com.itvillage.section07.class02.SchedulersNewParallelExample01 참조
+    - `com.itvillage.section07.class02.SchedulersNewParallelExample01` 참고
   - Schedulers.fromExecutorService()
     - 기존에 사용하고 있는 ExecutorService가 있다면 해당 서비스를 사용하여 스레드 생성(권장x)
     - 의미있는 식별자를 제공하기 때문에 Metric에서 주로 사용됨
@@ -146,40 +146,72 @@
     - newSingle(), newParallel(), newboudedElastic()
     - Scheduler의 이름 지정 가능
     - scheduler.dispose(): new로 생성된 경우 일정시간동안 종료되지 않음 그래서 해당 구문으로 작업이 끝난 후 즉시 종료 할 수 있음
-- Context
-  - `com.itvillage.section08` 참조
-  - Reactor Sequence 상에서 상태를 저장하고 저장된 상태 값을 Operator 체인에서 공유해서 사용할 수 있는 인터페이스
-  - 스레드가 달라도 공유가능
-  - key, value 형태로 저장되고 contextWrite()을 사용함
-  - 값을 읽어오기 위해서는 읽기전용 ContextView를 사용
-    - deferContextual()
-    - transformDeferredContextual()
-  - Context API
-    - put(key, value): key/value 형태로 Context에 값을 씀
-    - Context.of(key1, value1, key2, value2,...): key/value 형태로 Context에 여러개의 값을 씀
-    - putAll(ContextView): 파라미터로 입력된 ContextView를 merge
-    - delete(key): Context에서 key에 해당하는 value를 삭제
-  - Context View API
-    - get(key): ContextView에서 key에 해당하는 value를 반환한다.
-    - getOrEmpty(key): ContextView에서 key에 해당하는 value를 Optional로 래핑해서 반환
-    - getOrDefault(key, default value): ContextView에서 key에 해당하는 value를 가져옴, key에 해당하는 value가 없으면 default value를 가져옴
-    - hasKey(key): ContextView에서 특정 key가 존재하는지 확인
-    - isEmpty(): Context가 비어있는지 확인
-    - size(): Context내에 있는 key/value 쌍의 개수를 반환
-  - Context의 특징
-    - `com.itvillage.section08.class02` 참조
-    - Context는 각각의 Subscriber를 통해 Reactor Sequence에 연결되며 체인에서 각각의 Operator들이 실행 스레드가 달라도 연결된 Context에 접근할 수 있음
-      - `ContextFetureExample01` 참조
-      - Subscriber 별로 다른 Context를 가짐
-    - Context는 Operator 체인의 맨 아래에서부터 위로 전파됨
-      - `ContextFetureExample02` 참조
-      - Context는 Downstream에서 Upstream으로 전파됨
-      - Operator 체인에서 Context read메서드가 Context write 메서드 밑에 있을 경우에는 write된 값을 read 할 수 없음
-      - 따라서 일반적으로 Context에 write할때에는 Operator 체인의 마지막에 둠
-    - 동일한 key에 대해서는 값을 덮어씀(이것 역시 밑에서 위로)
-      - `ContextFetureExample03` 참조
-    - 메인 Operator 내부에서 Sequence를 생성하는 flatMap() 같은 Operator내에서 write된 Context의 값은 Inner Sequence 내부에서만 유효하고, 외부 Operator 체인에서는 보이지 않음
-      - `ContextFetureExample04` 참조
-      - Inner Sequence에서 저장한 Context는 메인 Sequence에서 보이지 않음
-      - 메인 Sequence에서 저장한 Context는 Inner Sequence에서 보임
-    
+
+---
+
+### Context
+- `com.itvillage.section08` 참고
+- Reactor Sequence 상에서 상태를 저장하고 저장된 상태 값을 Operator 체인에서 공유해서 사용할 수 있는 인터페이스
+- 스레드가 달라도 공유가능
+- key, value 형태로 저장되고 contextWrite()을 사용함
+- 값을 읽어오기 위해서는 읽기전용 ContextView를 사용
+  - deferContextual()
+  - transformDeferredContextual()
+- Context API
+  - put(key, value): key/value 형태로 Context에 값을 씀
+  - Context.of(key1, value1, key2, value2,...): key/value 형태로 Context에 여러개의 값을 씀
+  - putAll(ContextView): 파라미터로 입력된 ContextView를 merge
+  - delete(key): Context에서 key에 해당하는 value를 삭제
+- Context View API
+  - get(key): ContextView에서 key에 해당하는 value를 반환한다.
+  - getOrEmpty(key): ContextView에서 key에 해당하는 value를 Optional로 래핑해서 반환
+  - getOrDefault(key, default value): ContextView에서 key에 해당하는 value를 가져옴, key에 해당하는 value가 없으면 default value를 가져옴
+  - hasKey(key): ContextView에서 특정 key가 존재하는지 확인
+  - isEmpty(): Context가 비어있는지 확인
+  - size(): Context내에 있는 key/value 쌍의 개수를 반환
+- Context의 특징
+  - `com.itvillage.section08.class02` 참고
+  - Context는 각각의 Subscriber를 통해 Reactor Sequence에 연결되며 체인에서 각각의 Operator들이 실행 스레드가 달라도 연결된 Context에 접근할 수 있음
+    - `ContextFetureExample01` 참고
+    - Subscriber 별로 다른 Context를 가짐
+  - Context는 Operator 체인의 맨 아래에서부터 위로 전파됨
+    - `ContextFetureExample02` 참고
+    - Context는 Downstream에서 Upstream으로 전파됨
+    - Operator 체인에서 Context read메서드가 Context write 메서드 밑에 있을 경우에는 write된 값을 read 할 수 없음
+    - 따라서 일반적으로 Context에 write할때에는 Operator 체인의 마지막에 둠
+  - 동일한 key에 대해서는 값을 덮어씀(이것 역시 밑에서 위로)
+    - `ContextFetureExample03` 참고
+  - 메인 Operator 내부에서 Sequence를 생성하는 flatMap() 같은 Operator내에서 write된 Context의 값은 Inner Sequence 내부에서만 유효하고, 외부 Operator 체인에서는 보이지 않음
+    - `ContextFetureExample04` 참고
+    - Inner Sequence에서 저장한 Context는 메인 Sequence에서 보이지 않음
+    - 메인 Sequence에서 저장한 Context는 Inner Sequence에서 보임
+
+---
+
+### Debugging
+- Debugging 관련 용어
+  - stacktrace: 호출된 메서드에 대한 Stack Frame에 대한 리포트
+  - assembly: 새로운 Flux가 선언된 지점
+  - traceback: 실패한 operator의 stacktrace를 캡쳐한 정보
+- Debugging 방법
+  - 전역 Debug 모드 활성화
+    - `com.itvillage.section09.class00` 참고
+    - Debug 모드 시, Operator의 stacktrace capturing을 통해 디버깅에 필요한 정보를 측정 
+    - Hooks.onOperatorDebug()를 통해서 Debug 모드를 활성화 할 수 있음
+    - Hooks.onOperatorDebug()는 Operator 체인이 선언되기 전에 수행되어야 함
+    - Debug 모드를 활성화 하면 Operator 체인에서 에러 발생 시, 에러가 발생한 Operator의 위치를 알려줌
+    - 사용이 쉽지만 애플리케이션 내 모든 Operator의 assembly(New Flux or Mono)를 캡처하기 때문에 비용이 많이 듬
+  - checkpoint() Operator를 사용(Locally)
+    - `com.itvillage.section09.class01` 참고
+    - 특정 Operator 체인 내에서만 assembly stacktrace를 캡쳐
+    - checkpoint(description)를 사용하면 에러 발생 시, chpeckpoint(description)를 추가한 지점의 assembly stacktrace를 생략하고 description을 통해 에러 발생 지점을 예상할 수 있음
+    - checkpoint(description, true) = checkpoint( ) + checkpoint(“description”)
+      - 에러 발생 시, 고유한 식별자 등의 description과  assembly stack trace(traceback)를 모두 출력한다.
+    - 강의 듣다보니 밑에서 하나하나씩 추가하면서 지정하는게 좋을듯
+  - log() operator를 사용해서 Reactor Sequence에서 발생하는 Signal을 확인하는 방법
+    - `com.itvillage.section09.class02` 참고
+    - Flux 또는 Mono에서 발생하는 signal event를 출력해준다(onNext, onError, onComplete, subscriptions, cancellations, requests)
+    - 여러개의 log()를 사용할 수 있으며, Operator 마다 전파되는 singal event를 확인할 수 있다.
+    - Custom Category를 입력해서 Operator 마다 출력되는 signal event를 구분할 수 있다.
+    - 에러 발생 시, stacktrace도 출력해준다.
+    - debug mode 라면 traceback도 출력해준다.
