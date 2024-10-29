@@ -15,9 +15,10 @@ public class TestPublisherTestExample03 {
         TestPublisher<Integer> source = TestPublisher.create();
 
         StepVerifier
-                .create(source.flux())
+                .create(source.flux().log())
                 .expectSubscription()
-                .then(() -> source.emit(1, 2, 3))
+                .then(() -> source.emit(1, 2, 3)) // emit은 onComplete 시그널을 전송시켜주기 때문에 정상 종료됨
+                //.then(() -> source.next(1, 2, 3)) // next는 onComplete 시그널을 전송 안하기 때문에 무한 대기
                 .expectNext(1)
                 .expectNext(2)
                 .expectNext(3)

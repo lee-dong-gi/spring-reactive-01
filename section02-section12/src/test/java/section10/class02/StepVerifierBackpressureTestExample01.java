@@ -14,6 +14,7 @@ public class StepVerifierBackpressureTestExample01 {
     @Test
     public void generateNumberTest() {
         StepVerifier
+                // upstream에 데이터를 요청하는 개수, 1개씩 데이터 요청하도록, 그러나 generateNumberByErrorStrategy함수는 100개의 데이터를 emit하게 되어서 에러가 발생
                 .create(BackpressureExample.generateNumberByErrorStrategy(), 1L)
                 .thenConsumeWhile(num -> num >= 1) // emit 된 데이터들을 소비한다.
                 .verifyComplete();

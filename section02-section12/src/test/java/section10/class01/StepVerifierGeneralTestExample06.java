@@ -19,7 +19,7 @@ public class StepVerifierGeneralTestExample06 {
                         StepVerifierOptions.create().scenarioName("Verify from 0 to 499"))
                 .expectSubscription()
                 .expectNext(0)
-                .expectNextCount(498)
+                .expectNextCount(498) // expectNext다음에 emit되는 데이터 개수를 카운팅해서 기대함
                 .expectNext(499) // TODO 값을 바꿔서 실패 예제 보여주기
                 .expectComplete()
                 .verify();

@@ -20,6 +20,6 @@ public class GeneralExample {
 
     public static Flux<Integer> takeNumber(Flux<Integer> source, long n) {
         return source
-                .take(n);
+                .take(n); // n개 만큼만 emit 하겠다는 의미
     }
 }

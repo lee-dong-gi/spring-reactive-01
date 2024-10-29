@@ -20,7 +20,7 @@ public class StepVerifierRecordTestExample02 {
                 .create(RecordExample.getCountry(Flux.just("france", "russia", "greece", "poland")))
                 .expectSubscription()
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(country -> !country.isEmpty())
+                .thenConsumeWhile(country -> !country.isEmpty()) // 비어있지 않으면 recordWith에 만든 객체에 데이터를 넣어라
                 .expectRecordedMatches(countries ->
                         countries
                                 .stream()

@@ -12,10 +12,10 @@ public class StepVerifierGeneralTestExample02 {
     public void sayHelloReactorTest() {
         StepVerifier
                 .create(GeneralExample.sayHelloReactor())
-                .expectSubscription()
-                .expectNext("Hello")
-                .expectNext("Reactor")
-                .expectComplete()
-                .verify();
+                .expectSubscription() // 구독 정상 발생 검증
+                .expectNext("Hello") // 첫번째 emit 데이터를 Hello로 기대함
+                .expectNext("Reactor") // 두번째 emit 데이터를 Reactor로 기대함
+                .expectComplete() // onComplete Signal 검증
+                .verify(); // 검증 실행.
     }
 }

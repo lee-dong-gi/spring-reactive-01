@@ -17,7 +17,7 @@ public class TestPublisherTestExample01 {
 
         StepVerifier
                 .create(GeneralExample.divideByTwo(source.flux()))
-                .expectSubscription()
+                .expectSubscription() // 정상구독검증
                 .then(() -> source.next(2, 4, 6, 8, 10))
                 .expectNext(1, 2, 3, 4, 5)
                 .expectComplete()

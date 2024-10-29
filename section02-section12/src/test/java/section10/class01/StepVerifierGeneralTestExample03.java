@@ -14,7 +14,7 @@ public class StepVerifierGeneralTestExample03 {
         StepVerifier
                 .create(GeneralExample.sayHelloReactor())
                 .expectSubscription()
-                .as("# expect subscription")
+                .as("# expect subscription") // 실패메세지 지정
                 .expectNext("Hi")
                 .as("# expect Hi")
                 .expectNext("Reactor")

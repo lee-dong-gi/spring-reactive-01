@@ -15,8 +15,8 @@ public class PublisherProbeTestExample01 {
                 .expectNextCount(1)
                 .verifyComplete();
 
-        probe.assertWasSubscribed();
-        probe.assertWasRequested();
-        probe.assertWasNotCancelled();
+        probe.assertWasSubscribed(); // 구독이 잘 이루어 졌는지
+        probe.assertWasRequested(); // 데이터의 요청이 잘 이루어 졌는지
+        probe.assertWasNotCancelled(); // 별도의 구독취소가 없었는지
     }
 }

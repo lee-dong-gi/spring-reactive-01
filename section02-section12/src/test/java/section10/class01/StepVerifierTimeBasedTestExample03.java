@@ -22,6 +22,6 @@ public class StepVerifierTimeBasedTestExample03 {
                 .expectSubscription()
                 .expectNextCount(11)
                 .expectComplete()
-                .verify(Duration.ofSeconds(3));
+                .verify(Duration.ofSeconds(3)); // 3초안에 완료
     }
 }

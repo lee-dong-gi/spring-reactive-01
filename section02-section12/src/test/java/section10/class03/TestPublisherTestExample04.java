@@ -12,8 +12,8 @@ import reactor.test.publisher.TestPublisher;
 public class TestPublisherTestExample04 {
     @Test
     public void divideByTwoTest() {
-        TestPublisher<Integer> source = TestPublisher.createNoncompliant(TestPublisher.Violation.ALLOW_NULL);
-//        TestPublisher<Integer> source = TestPublisher.create();
+        TestPublisher<Integer> source = TestPublisher.createNoncompliant(TestPublisher.Violation.ALLOW_NULL); // null 값 허용, emit된 이후 에러 발생
+//        TestPublisher<Integer> source = TestPublisher.create(); // emit되기 전에 에러 발생
 
         StepVerifier
                 .create(GeneralExample.divideByTwo(source.flux()))

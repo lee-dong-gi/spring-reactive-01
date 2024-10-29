@@ -19,8 +19,8 @@ public class StepVerifierBackpressureTestExample03 {
                 .thenConsumeWhile(num -> num >= 1)
                 .expectComplete()
                 .verifyThenAssertThat()
-                .hasDiscardedElements()
-                .hasDiscarded(2, 3, 4, 5, 6, 98, 99, 100);
-//                .hasDropped(2, 3, 4, 5, 6, 98, 99, 100);
+                .hasDiscardedElements() // DROP 전략
+                .hasDiscarded(2, 3, 4, 5, 6, 98, 99, 100); // DROP 전략
+//                .hasDropped(2, 3, 4, 5, 6, 98, 99, 100); // 백프레셔 전략 중 DROP 전략을 의미하는 것이 아님, 그냥 어떠한 처리없이 날라간 데이터를 의미
     }
 }

@@ -20,6 +20,8 @@ public class StepVerifierGeneralTestExample04 {
                 .expectNext(3)
                 .expectNext(4)
                 .expectError()
+//                .expectNext(5)
+//                .expectComplete()
                 .verify();
     }
 }

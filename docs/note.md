@@ -11,6 +11,7 @@
 - Sequence: Publisher가 emit하는 데이터의 연속적인 흐름을 저의 해 놓은 것. Operator 체인 형태로 정의
 - Subscribe: Subscriber가 Sequence를 구독하는 것
 - Dispose: Subscriber가 Sequence를 구독 해지 하는 것
+- flatMap: 각 요소에 대해 새로운 Publisher나 Stream을 생성하고, 이를 하나의 스트림으로 평탄화하여 결과를 방출
 
 ---
 
@@ -215,3 +216,32 @@
     - Custom Category를 입력해서 Operator 마다 출력되는 signal event를 구분할 수 있다.
     - 에러 발생 시, stacktrace도 출력해준다.
     - debug mode 라면 traceback도 출력해준다.
+
+---
+
+### Testing
+- StepVerifier를 이용한 Testing
+  - `section10.class01` 참고
+  - Flux 또는 Mono로 선언된 Operator 체인을 구독 시, 동작 방식을 테스트하기 위한 가장 일반적인 테스트 방식
+  - expectXXXX()를 이용해서 Sequence 상에서 예상되는 Signal의 기대값을 assertion할 수 있다.
+  - verify() Operator를 호출함으로써 전체 Operator 체인의 테스트를 트리거 한다.
+  - verifyXXXX()를 이용해서 전체 Operator 체인의 테스트를 트리거 + 종료 또는 에러 이벤트 검증을 수행할 수 있다.
+  - 실제 수행되는 시간과 관련된 테스트를 수행할 수 있다.
+  - Backpressure 테스트
+    - hasDropped(), hasDiscarded() 등을 이용해서 backpressure 테스트를 수행할 수 있다.
+  - Context 테스트
+    - expectAccessibleContext()를 이용해서 접근 가능한 Context가 있는지 테스트 할 수 있다.
+    - hasKey()를 사용하여 Context의 key가 존재하는지 검증할 수 있다.
+  - 기록된 데이터를 이용한 테스트
+    - recordWith()를 사용하여 emit 된 데이터를 기록할 수 있다.
+    - consumeRecordedWith()를 사용하여 기록된 데이터들을 소비하며 검증할 수 있다.
+    - expectRecordedMatches()를 사용하여 기록된 데이터의 컬렉션을 검증할 수 있다.
+- TestPublisher를 이용한 Testing
+  - Testing 목적에 사용하기 위한 Publisher이다.
+  - 개발자가 직접 프로그래밍을 통해 signal을 발생시킬 수 있다.
+  - 주로 특정한 상황을 재현하여 테스트하고 싶은 경우 사용할 수 있다.
+  - 리액티브 스트림즈 사양을 준수하는지의 여부를 테스트할 수 있다.
+- PublisherProbe를 이용한 Testing
+  - Operator 체인의 실행 경로를 검증할 수 있다.
+  - 주로 조건에 따른 분기로 인해서 Sequence가 분기 되는 경우, 실행 경로를 추적해서 정상적으로 실행이 되었는지 확인할 수 있다.
+  - 해당 실행 경로대로 정상적으로 실행되었는지의 여부는 assertWasSubscribed(),  assertWasRequested(), assertWasCancelled() 를 통해 검증할 수 있다.    
